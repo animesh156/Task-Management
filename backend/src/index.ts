@@ -1,0 +1,30 @@
+// 🔥 MUST be first line — no imports above this
+import "dotenv/config";
+
+import express, { type Request, type Response } from "express";
+
+import authRoutes from "./modules/auth/auth.routes.js";
+
+const app = express();
+const PORT = Number(process.env.PORT) || 5000;
+
+import { prisma } from "./lib/prisma.js";
+
+// middleware
+app.use(express.json());
+
+
+app.get("/db-test", async (_req, res) => {
+  const users = await prisma.user.findMany();
+  res.json(users);
+});
+
+app.use("/api/auth", authRoutes);
+
+app.get("/health", (_req: Request, res: Response) => {
+  res.json({ status: "ok" });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
