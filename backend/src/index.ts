@@ -1,7 +1,8 @@
-// 🔥 MUST be first line — no imports above this
+
 import "dotenv/config";
 
 import express, { type Request, type Response } from "express";
+import cookieParser from "cookie-parser";
 
 import authRoutes from "./modules/auth/auth.routes.js";
 import userRoutes from "./modules/users/user.routes.js"
@@ -13,7 +14,7 @@ import { prisma } from "./lib/prisma.js";
 
 // middleware
 app.use(express.json());
-
+app.use(cookieParser()); 
 
 app.get("/db-test", async (_req, res) => {
   const users = await prisma.user.findMany();

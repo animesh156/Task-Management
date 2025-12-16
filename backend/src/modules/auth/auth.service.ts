@@ -5,7 +5,7 @@ import { signToken } from "../../utils/jwt.js";
 
 export class AuthService {
   static async register(data: RegisterInput) {
-    const existingUser = await AuthRepository.findByEmail(data.email);
+    const existingUser = await AuthRepository.findByEmail(data.email); 
 
     if (existingUser) {
       throw new Error("Email already in use");
