@@ -1,33 +1,68 @@
 import { useState } from "react";
 import { useTasks, useOverdueTasks } from "../hooks/useTasks";
+import { useLogout } from "../hooks/useAuth";
 import TaskCard from "../components/TaskCard";
 import TaskSkeleton from "../components/TaskSkeleton";
 import TaskTabs from "../components/TaskTabs";
 import TaskFilters from "../components/TaskFilters";
 
 export default function Dashboard() {
+  const logout = useLogout();
+
   const [tab, setTab] = useState<"assigned" | "created" | "overdue">(
     "assigned"
   );
 
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState<{
+    status?: string;
+    priority?: string;
+    sortByDueDate?: "asc" | "desc";
+  }>({
+    sortByDueDate: "asc",
+  });
 
-  const { data, isLoading } = useTasks(filters);
-  const { data: overdue } = useOverdueTasks();
+  const { data, isLoading } = useTasks({
+    ...filters,
+    view: tab === "overdue" ? undefined : tab,
+  });
+
+  const { data: overdue, isLoading: overdueLoading } =
+    useOverdueTasks();
 
   const tasks = tab === "overdue" ? overdue : data;
+  const loading = tab === "overdue" ? overdueLoading : isLoading;
 
   return (
     <div className="p-4 max-w-7xl mx-auto">
-      <h1 className="text-2xl font-bold">Dashboard</h1>
+      {/* Header */}
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Dashboard</h1>
+
+        <button
+          onClick={async () => {
+            await logout.mutateAsync();
+            window.location.href = "/login";
+          }}
+          className="text-sm text-red-600 hover:underline"
+        >
+          Logout
+        </button>
+      </div>
 
       <TaskTabs tab={tab} setTab={setTab} />
-      <TaskFilters filters={filters} setFilters={setFilters} />
+
+      {tab !== "overdue" && (
+        <TaskFilters filters={filters} setFilters={setFilters} />
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-        {isLoading
-          ? Array.from({ length: 6 }).map((_, i) => <TaskSkeleton key={i} />)
-          : tasks?.map((task) => <TaskCard key={task.id} task={task} />)}
+        {loading
+          ? Array.from({ length: 6 }).map((_, i) => (
+              <TaskSkeleton key={i} />
+            ))
+          : tasks?.map((task) => (
+              <TaskCard key={task.id} task={task} />
+            ))}
       </div>
     </div>
   );
