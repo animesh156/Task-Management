@@ -17,10 +17,6 @@ import { prisma } from "./lib/prisma.js";
 app.use(express.json());
 app.use(cookieParser()); 
 
-app.get("/db-test", async (_req, res) => {
-  const users = await prisma.user.findMany();
-  res.json(users);
-});
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);

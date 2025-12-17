@@ -35,9 +35,9 @@ export class TaskController {
     res.json(task);
   }
 
-  static async remove(req: Request, res: Response) {
+  static async remove(req: Request, res: Response) { 
     await TaskService.deleteTask(req.params.id);
-    res.status(204).send();
+    res.status(204).send("Task Deleted");
   }
 
   static async getAll(req: Request, res: Response) {
