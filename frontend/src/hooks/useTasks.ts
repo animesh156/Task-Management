@@ -1,5 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
-import { fetchTasks, fetchOverdueTasks } from "../api/tasks.api";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  fetchTasks,
+  fetchOverdueTasks,
+  createTask,
+} from "../api/tasks.api";
 
 type TaskQueryParams = {
   view?: "assigned" | "created";
@@ -15,14 +19,35 @@ const cleanParams = (params: TaskQueryParams) =>
     )
   ) as TaskQueryParams;
 
-export const useTasks = (params: TaskQueryParams) =>
-  useQuery({
-    queryKey: ["tasks", params],
-    queryFn: () => fetchTasks(cleanParams(params)),
+/* -------------------- Queries -------------------- */
+
+export const useTasks = (params: TaskQueryParams) => {
+  const cleaned = cleanParams(params);
+
+  return useQuery({
+    queryKey: ["tasks", cleaned],
+    queryFn: () => fetchTasks(cleaned),
   });
+};
 
 export const useOverdueTasks = () =>
   useQuery({
     queryKey: ["tasks", "overdue"],
     queryFn: fetchOverdueTasks,
   });
+
+/* -------------------- Mutation -------------------- */
+
+export const useCreateTask = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createTask,
+    onSuccess: () => {
+      // 🔄 refresh all task lists
+      queryClient.invalidateQueries({
+        queryKey: ["tasks"],
+      });
+    },
+  });
+};

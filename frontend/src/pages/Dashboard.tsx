@@ -5,6 +5,8 @@ import TaskCard from "../components/TaskCard";
 import TaskSkeleton from "../components/TaskSkeleton";
 import TaskTabs from "../components/TaskTabs";
 import TaskFilters from "../components/TaskFilters";
+import { Link } from "react-router-dom";
+
 
 export default function Dashboard() {
   const logout = useLogout();
@@ -38,15 +40,25 @@ export default function Dashboard() {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Dashboard</h1>
 
-        <button
-          onClick={async () => {
-            await logout.mutateAsync();
-            window.location.href = "/login";
-          }}
-          className="text-sm text-red-600 hover:underline"
-        >
-          Logout
-        </button>
+       <div className="flex gap-3 items-center">
+  <Link
+    to="/tasks/create"
+    className="bg-black text-white px-4 py-2 rounded text-sm hover:bg-gray-800"
+  >
+    + Create Task
+  </Link>
+
+  <button
+    onClick={async () => {
+      await logout.mutateAsync();
+      window.location.href = "/login";
+    }}
+    className="text-sm text-red-600 hover:underline"
+  >
+    Logout
+  </button>
+</div>
+
       </div>
 
       <TaskTabs tab={tab} setTab={setTab} />
