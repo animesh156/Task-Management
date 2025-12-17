@@ -13,7 +13,7 @@ export default function TaskTabs({
         const active = tab === t;
 
         return (
-          <button
+          <button 
             key={t}
             onClick={() => setTab(t)}
             className={`px-4 py-1.5 text-sm font-medium rounded-md transition

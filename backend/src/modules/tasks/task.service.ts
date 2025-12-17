@@ -35,7 +35,5 @@ export class TaskService {
     return TaskRepository.findAllForUser(userId, query);
   }
 
-  static async getOverdueTasks(userId: string) {
-    return TaskRepository.findOverdue(userId);
-  }
+  
 }

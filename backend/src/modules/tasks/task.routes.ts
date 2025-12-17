@@ -8,7 +8,6 @@ router.use(authMiddleware);
 
 router.post("/", TaskController.create);
 router.get("/", TaskController.getAll);
-router.get("/overdue", TaskController.overdue);
 router.put("/:id", TaskController.update);
 router.delete("/:id", TaskController.remove);
 

@@ -54,8 +54,5 @@ export class TaskController {
     res.json(tasks);
   }
 
-  static async overdue(req: Request, res: Response) {
-    const tasks = await TaskService.getOverdueTasks(req.user!.id);
-    res.json(tasks);
-  }
+
 }

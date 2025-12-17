@@ -11,7 +11,9 @@ export const CreateTaskDto = z.object({
 
 export const UpdateTaskDto = CreateTaskDto.partial();
 
+
 export const TaskQueryDto = z.object({
+  view: z.enum(["assigned", "created", "overdue"]).optional(),
   status: z.enum(["TODO", "IN_PROGRESS", "REVIEW", "COMPLETED"]).optional(),
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]).optional(),
   sortByDueDate: z.enum(["asc", "desc"]).optional(),

@@ -22,28 +22,37 @@ export class TaskRepository {
   }
 
   static findAllForUser(userId: string, query: TaskQueryInput) {
-    return prisma.task.findMany({
-      where: {
-        OR: [
-          { assignedToId: userId },
-          { creatorId: userId },
-        ],
-        status: query.status,
-        priority: query.priority,
-      },
-      orderBy: query.sortByDueDate
-        ? { dueDate: query.sortByDueDate }
-        : undefined,
-    });
+  const where: any = {};
+
+  
+  if (query.view === "assigned") {
+    where.assignedToId = userId;
   }
 
-  static findOverdue(userId: string) {
-    return prisma.task.findMany({
-      where: {
-        assignedToId: userId,
-        dueDate: { lt: new Date() },
-        status: { not: "COMPLETED" },
-      },
-    });
+  if (query.view === "created") {
+    where.creatorId = userId;
   }
+
+  if (query.view === "overdue") {
+    where.assignedToId = userId;
+    where.dueDate = { lt: new Date() };
+    where.status = { not: "COMPLETED" };
+  }
+
+  if (query.view !== "overdue") {
+    if (query.status) where.status = query.status;
+  }
+
+  if (query.priority) where.priority = query.priority;
+
+  const args: any = { where };
+
+  if (query.sortByDueDate) {
+    args.orderBy = { dueDate: query.sortByDueDate };
+  }
+
+  return prisma.task.findMany(args);
+}
+
+
 }
