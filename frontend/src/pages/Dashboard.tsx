@@ -11,12 +11,11 @@ import { useQueryClient } from "@tanstack/react-query";
 
 
 export default function Dashboard() {
-  
   const logout = useLogout();
-   const socket = useSocket();
-    const queryClient = useQueryClient();
+  const socket = useSocket();
+  const queryClient = useQueryClient();
 
-   useEffect(() => {
+  useEffect(() => {
     socket.on("task:updated", () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
     });
@@ -50,46 +49,56 @@ export default function Dashboard() {
   const loading = tab === "overdue" ? overdueLoading : isLoading;
 
   return (
-    <div className="p-4 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Dashboard</h1>
+    <div className="min-h-screen bg-[#020617] text-slate-200">
+      <div className="p-6 max-w-7xl mx-auto">
+        
+        {/* Header */}
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-semibold text-slate-100">
+            Dashboard
+          </h1>
 
-       <div className="flex gap-3 items-center">
-  <Link
-    to="/tasks/create"
-    className="bg-black text-white px-4 py-2 rounded text-sm hover:bg-gray-800"
-  >
-    + Create Task
-  </Link>
+          <div className="flex gap-3 items-center">
+            <Link
+              to="/tasks/create"
+              className="bg-slate-800 text-slate-100 px-4 py-2 rounded-md text-sm
+                         hover:bg-slate-700 transition border border-slate-700"
+            >
+              + Create Task
+            </Link>
 
-  <button
-    onClick={async () => {
-      await logout.mutateAsync();
-      window.location.href = "/login";
-    }}
-    className="text-sm text-red-600 hover:underline"
-  >
-    Logout
-  </button>
-</div>
+            <button
+              onClick={async () => {
+                await logout.mutateAsync();
+                window.location.href = "/login";
+              }}
+              className="text-sm cursor-pointer text-red-400 hover:text-red-300 transition"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
 
-      </div>
+        {/* Tabs */}
+        <TaskTabs tab={tab} setTab={setTab} />
 
-      <TaskTabs tab={tab} setTab={setTab} />
+        {/* Filters */}
+        {tab !== "overdue" && (
+          <div className="mt-4">
+            <TaskFilters filters={filters} setFilters={setFilters} />
+          </div>
+        )}
 
-      {tab !== "overdue" && (
-        <TaskFilters filters={filters} setFilters={setFilters} />
-      )}
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-        {loading
-          ? Array.from({ length: 6 }).map((_, i) => (
-              <TaskSkeleton key={i} />
-            ))
-          : tasks?.map((task) => (
-              <TaskCard key={task.id} task={task} />
-            ))}
+        {/* Task Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-6">
+          {loading
+            ? Array.from({ length: 6 }).map((_, i) => (
+                <TaskSkeleton key={i} />
+              ))
+            : tasks?.map((task) => (
+                <TaskCard key={task.id} task={task} />
+              ))}
+        </div>
       </div>
     </div>
   );

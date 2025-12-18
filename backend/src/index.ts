@@ -44,12 +44,12 @@ export const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log("🔌 Socket connected:", socket.id);
+  
 
   // user joins personal room
   socket.on("join", (userId: string) => {
     socket.join(userId);
-    console.log(`👤 User ${userId} joined room`);
+    
   });
 
   socket.on("disconnect", () => {

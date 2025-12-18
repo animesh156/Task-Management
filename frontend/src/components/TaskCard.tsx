@@ -2,31 +2,32 @@ import type { Task } from "../types/task";
 import { useUpdateTask } from "../hooks/useTasks";
 
 const statusStyles: Record<Task["status"], string> = {
-  TODO: "bg-gray-100 text-gray-700",
-  IN_PROGRESS: "bg-blue-100 text-blue-700",
-  REVIEW: "bg-yellow-100 text-yellow-700",
-  COMPLETED: "bg-green-100 text-green-700",
+  TODO: "bg-gray-800 text-gray-300 border border-gray-700",
+  IN_PROGRESS: "bg-blue-900/40 text-blue-300 border border-blue-700",
+  REVIEW: "bg-yellow-900/40 text-yellow-300 border border-yellow-700",
+  COMPLETED: "bg-green-900/40 text-green-300 border border-green-700",
 };
 
 const priorityStyles: Record<Task["priority"], string> = {
-  LOW: "text-gray-500",
-  MEDIUM: "text-blue-600",
-  HIGH: "text-orange-600",
-  URGENT: "text-red-600",
+  LOW: "text-gray-400",
+  MEDIUM: "text-blue-400",
+  HIGH: "text-orange-400",
+  URGENT: "text-red-400",
 };
 
 export default function TaskCard({ task }: { task: Task }) {
   const updateTask = useUpdateTask();
 
   return (
-    <div className="group bg-white border rounded-lg p-4 shadow-sm hover:shadow-md transition flex flex-col gap-3">
+    <div className="group bg-[#0f172a] border border-slate-800 rounded-xl p-4 shadow-sm hover:shadow-lg hover:border-slate-700 transition flex flex-col gap-3">
+      
       {/* Title + Status */}
-      <div className="flex justify-between items-start">
-        <h3 className="font-semibold text-gray-900 line-clamp-1">
+      <div className="flex justify-between items-start gap-2">
+        <h3 className="font-semibold text-slate-100 line-clamp-1">
           {task.title}
         </h3>
 
-        {/* STATUS BADGE / EDIT */}
+        {/* STATUS EDIT (hover) */}
         <select
           value={task.status}
           onChange={(e) =>
@@ -36,6 +37,7 @@ export default function TaskCard({ task }: { task: Task }) {
             })
           }
           className={`text-xs px-2 py-0.5 rounded-full font-medium cursor-pointer
+            bg-transparent outline-none
             ${statusStyles[task.status]}
             opacity-0 group-hover:opacity-100 transition`}
         >
@@ -45,7 +47,7 @@ export default function TaskCard({ task }: { task: Task }) {
           <option value="COMPLETED">Completed</option>
         </select>
 
-        {/* static badge when not hovering */}
+        {/* STATUS BADGE */}
         <span
           className={`text-xs px-2 py-0.5 rounded-full font-medium
             ${statusStyles[task.status]}
@@ -56,7 +58,7 @@ export default function TaskCard({ task }: { task: Task }) {
       </div>
 
       {/* Description */}
-      <p className="text-sm text-gray-600 line-clamp-2">
+      <p className="text-sm text-slate-400 line-clamp-2">
         {task.description}
       </p>
 
@@ -71,7 +73,7 @@ export default function TaskCard({ task }: { task: Task }) {
               data: { priority: e.target.value },
             })
           }
-          className={`font-medium cursor-pointer bg-transparent
+          className={`bg-transparent outline-none cursor-pointer font-medium
             ${priorityStyles[task.priority]}`}
         >
           <option value="LOW">Low</option>
@@ -80,7 +82,7 @@ export default function TaskCard({ task }: { task: Task }) {
           <option value="URGENT">Urgent</option>
         </select>
 
-        <span className="text-gray-500">
+        <span className="text-slate-500">
           Due {new Date(task.dueDate).toLocaleDateString()}
         </span>
       </div>

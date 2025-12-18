@@ -12,10 +12,13 @@ export default function TaskFilters({
   setFilters: (f: Filters) => void;
 }) {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-end gap-3">
+    <div className="flex flex-wrap items-end gap-3
+                    bg-[#0f172a] border border-slate-800
+                    rounded-xl px-4 py-3">
+      
       {/* Status */}
-      <div className="flex flex-col gap-1">
-        <label className="text-xs font-medium text-gray-600">
+      <div className="flex flex-col gap-1 w-[160px]">
+        <label className="text-[11px] font-medium text-slate-400 uppercase tracking-wide">
           Status
         </label>
         <select
@@ -23,7 +26,9 @@ export default function TaskFilters({
           onChange={(e) =>
             setFilters({ ...filters, status: e.target.value })
           }
-          className="border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+          className="h-9 bg-[#020617] border border-slate-700 rounded-md px-3 text-sm
+                     text-slate-200 outline-none
+                     focus:ring-2 focus:ring-slate-600"
         >
           <option value="">All</option>
           <option value="TODO">Todo</option>
@@ -34,8 +39,8 @@ export default function TaskFilters({
       </div>
 
       {/* Priority */}
-      <div className="flex flex-col gap-1">
-        <label className="text-xs font-medium text-gray-600">
+      <div className="flex flex-col gap-1 w-[160px]">
+        <label className="text-[11px] font-medium text-slate-400 uppercase tracking-wide">
           Priority
         </label>
         <select
@@ -43,7 +48,9 @@ export default function TaskFilters({
           onChange={(e) =>
             setFilters({ ...filters, priority: e.target.value })
           }
-          className="border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+          className="h-9 bg-[#020617] border border-slate-700 rounded-md px-3 text-sm
+                     text-slate-200 outline-none
+                     focus:ring-2 focus:ring-slate-600"
         >
           <option value="">All</option>
           <option value="LOW">Low</option>
@@ -54,9 +61,9 @@ export default function TaskFilters({
       </div>
 
       {/* Sort */}
-      <div className="flex flex-col gap-1">
-        <label className="text-xs font-medium text-gray-600">
-          Sort by due date
+      <div className="flex flex-col gap-1 w-[200px]">
+        <label className="text-[11px] font-medium text-slate-400 uppercase tracking-wide">
+          Due Date
         </label>
         <select
           value={filters.sortByDueDate ?? "asc"}
@@ -66,19 +73,22 @@ export default function TaskFilters({
               sortByDueDate: e.target.value as "asc" | "desc",
             })
           }
-          className="border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+          className="h-9 bg-[#020617] border border-slate-700 rounded-md px-3 text-sm
+                     text-slate-200 outline-none
+                     focus:ring-2 focus:ring-slate-600"
         >
           <option value="asc">Earliest first</option>
           <option value="desc">Latest first</option>
         </select>
       </div>
 
-      {/* Clear filters */}
+      {/* Clear */}
       <button
-        onClick={() =>
-          setFilters({ sortByDueDate: "asc" })
-        }
-        className="text-sm text-gray-500 hover:text-black sm:mb-1"
+        onClick={() => setFilters({ sortByDueDate: "asc" })}
+        className="h-9 px-3 text-sm rounded-md
+                   border border-slate-700
+                   text-slate-400 hover:text-slate-200
+                   hover:bg-slate-800 transition"
       >
         Clear
       </button>
