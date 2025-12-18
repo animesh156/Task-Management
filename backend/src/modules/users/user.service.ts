@@ -12,6 +12,11 @@ export class UserService {
     return user;
   }
 
+
+   static async getAllUsers() {
+    return UserRepository.findAll();
+  }
+
   static async updateProfile(userId: string, data: UpdateProfileInput) {
     return UserRepository.updateName(userId, data.name);
   }

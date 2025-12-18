@@ -7,8 +7,17 @@ export class UserRepository {
       select: {
         id: true,
         name: true,
-        email: true,
         createdAt: true,
+      },
+    });
+  }
+
+
+  static findAll() {
+    return prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
       },
     });
   }

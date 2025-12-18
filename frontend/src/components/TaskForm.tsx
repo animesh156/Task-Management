@@ -4,6 +4,8 @@ import {
   taskSchema,
   type TaskFormData,
 } from "../validation/task.schema";
+import { useUsers } from "../hooks/useUsers";
+import { useMe } from "../hooks/useAuth";
 
 type Props = {
   initialValues?: Partial<TaskFormData>;
@@ -28,6 +30,10 @@ export default function TaskForm({
       ...initialValues,
     },
   });
+
+  const { data: users } = useUsers();
+const { data: me } = useMe();
+
 
   return (
     <form
@@ -118,22 +124,35 @@ export default function TaskForm({
           </select>
         </div>
 
-        <div>
-          <label className="text-xs font-medium text-slate-400 uppercase tracking-wide">
-            Assign To (User ID)
-          </label>
-          <input
-            {...register("assignedToId")}
-            className="mt-1 h-10 w-full rounded-md bg-[#020617] border border-slate-700
-                       px-3 text-sm text-slate-200 outline-none
-                       focus:ring-2 focus:ring-slate-600"
-          />
-          {errors.assignedToId && (
-            <p className="mt-1 text-xs text-red-400">
-              Invalid user ID
-            </p>
-          )}
-        </div>
+      <div>
+  <label className="text-xs font-medium text-slate-400 uppercase tracking-wide">
+    Assign To
+  </label>
+
+  <select
+    {...register("assignedToId")}
+    className="mt-1 h-10 w-full rounded-md bg-[#020617] border border-slate-700
+               px-3 text-sm text-slate-200 outline-none
+               focus:ring-2 focus:ring-slate-600"
+  >
+    <option value="">Select user</option>
+
+    {users
+      ?.filter((u) => u.id !== me?.id) //  exclude current user
+      .map((user) => (
+        <option key={user.id} value={user.id}>
+          {user.name} 
+        </option>
+      ))}
+  </select>
+
+  {errors.assignedToId && (
+    <p className="mt-1 text-xs text-red-400">
+      Please select a user
+    </p>
+  )}
+</div>
+
       </div>
 
       {/* Actions */}

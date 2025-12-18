@@ -25,4 +25,12 @@ export class UserController {
     const user = await UserService.updateProfile(userId, parsed.data);
     res.json(user);
   }
+
+   static async getAll(
+    _req: Request,
+    res: Response
+  ) {
+    const users = await UserService.getAllUsers();
+    res.json(users);
+  }
 }
