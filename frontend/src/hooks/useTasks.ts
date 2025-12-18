@@ -5,9 +5,11 @@ import {
   fetchOverdueTasks,
   createTask,
 } from "../api/tasks.api";
+import { toast } from "react-hot-toast";
+import { AxiosError } from "axios";
 
 type TaskQueryParams = {
-  view?: "assigned" | "created";
+  view?: "assigned" | "created"; 
   status?: string;
   priority?: string;
   sortByDueDate?: "asc" | "desc";
@@ -46,10 +48,16 @@ export const useCreateTask = () => {
     mutationFn: createTask,
     onSuccess: () => {
       // 🔄 refresh all task lists
+      toast.success("Task created successfully")
       queryClient.invalidateQueries({
         queryKey: ["tasks"],
       });
     },
+     onError: (error: AxiosError<any>) => {
+          toast.error(
+            error.response?.data?.message || "Error creating task"
+          );
+        },
   });
 };
 
@@ -64,7 +72,13 @@ export const useUpdateTask = () => {
 
     onSuccess: () => {
       // fallback safety (socket already handles this)
+      toast.success("Task updated successfully")
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
+     onError: (error: AxiosError<any>) => {
+          toast.error(
+            error.response?.data?.message || "Error updating task"
+          );
+        },
   });
 }

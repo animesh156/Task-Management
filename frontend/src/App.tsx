@@ -6,6 +6,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import CreateTask from "./pages/CreateTask";
 import { SocketProvider } from "./context/SocketProvider";
 import { useNotifications } from "./hooks/useNotifications";
+import { Toaster } from "react-hot-toast";
 
 export default function App() {
   useNotifications();
@@ -13,6 +14,7 @@ export default function App() {
   return (
     <SocketProvider>
       <BrowserRouter>
+       <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

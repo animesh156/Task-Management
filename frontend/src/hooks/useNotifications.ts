@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { useSocket } from "../context/SocketProvider";
+import { toast } from "react-hot-toast";
 
 export const useNotifications = () => {
   const socket = useSocket();
 
   useEffect(() => {
     socket.on("task:assigned", (payload) => {
-      alert(payload.message); // replace with toast later
+      toast.success(payload.message); // notfiy the user
     });
 
     return () => {
