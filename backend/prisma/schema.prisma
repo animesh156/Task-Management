@@ -4,9 +4,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
-
 
 ////////////////////
 // ENUMS
@@ -31,14 +30,15 @@ enum TaskStatus {
 ////////////////////
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  password String
 
   createdTasks  Task[] @relation("CreatedTasks")
   assignedTasks Task[] @relation("AssignedTasks")
 
+  notifications Notification[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -51,12 +51,12 @@ model User {
 ////////////////////
 
 model Task {
-  id           String       @id @default(uuid())
-  title        String       @db.VarChar(100)
-  description  String
-  dueDate      DateTime
-  priority     TaskPriority
-  status       TaskStatus
+  id          String       @id @default(uuid())
+  title       String       @db.VarChar(100)
+  description String
+  dueDate     DateTime
+  priority    TaskPriority
+  status      TaskStatus
 
   creatorId    String
   assignedToId String
@@ -73,4 +73,16 @@ model Task {
   @@map("tasks")
 }
 
+////////////////////
+// NOTIFICATION
+////////////////////
 
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}

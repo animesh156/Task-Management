@@ -7,7 +7,7 @@ export const fetchTasks = async (params?: any): Promise<Task[]> => {
 };
 
 export const fetchOverdueTasks = async (): Promise<Task[]> => {
-  const res = await api.get("/tasks/overdue");
+  const res = await api.get("/tasks");
   return res.data;
 };
 

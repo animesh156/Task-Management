@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTasks, useOverdueTasks } from "../hooks/useTasks";
 import { useLogout } from "../hooks/useAuth";
 import TaskCard from "../components/TaskCard";
@@ -6,10 +6,25 @@ import TaskSkeleton from "../components/TaskSkeleton";
 import TaskTabs from "../components/TaskTabs";
 import TaskFilters from "../components/TaskFilters";
 import { Link } from "react-router-dom";
+import { useSocket } from "../context/SocketProvider";
+import { useQueryClient } from "@tanstack/react-query";
 
 
 export default function Dashboard() {
+  
   const logout = useLogout();
+   const socket = useSocket();
+    const queryClient = useQueryClient();
+
+   useEffect(() => {
+    socket.on("task:updated", () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    });
+
+    return () => {
+      socket.off("task:updated");
+    };
+  }, []);
 
   const [tab, setTab] = useState<"assigned" | "created" | "overdue">(
     "assigned"
