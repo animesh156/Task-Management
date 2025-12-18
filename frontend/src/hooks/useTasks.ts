@@ -1,3 +1,4 @@
+import { updateTask } from './../api/tasks.api';
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   fetchTasks,
@@ -51,3 +52,19 @@ export const useCreateTask = () => {
     },
   });
 };
+
+
+
+export const useUpdateTask = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: any }) =>
+      updateTask(id, data),
+
+    onSuccess: () => {
+      // fallback safety (socket already handles this)
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+  });
+}
