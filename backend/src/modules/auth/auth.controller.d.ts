@@ -1,0 +1,7 @@
+import type { Request, Response } from "express";
+export declare class AuthController {
+    static register(req: Request, res: Response): Promise<Response<any, Record<string, any>> | undefined>;
+    static login(req: Request, res: Response): Promise<Response<any, Record<string, any>> | undefined>;
+    static logout(_: Request, res: Response): Promise<void>;
+}
+//# sourceMappingURL=auth.controller.d.ts.map
