@@ -2,8 +2,8 @@
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
-     "rootDir": "./src",
-    "outDir": "./dist",
+    // "rootDir": "./src",
+    // "outDir": "./dist",
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
@@ -19,8 +19,9 @@
   },
   "exclude": [
     "**/*.test.ts",
+    "**/*.spec.ts",
     "**/__tests__/**",
-    "**/__mocks__/**",
+     "**/__mocks__/**",
     "jest.config.ts",
     "dist"
   ]
