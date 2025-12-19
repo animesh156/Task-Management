@@ -13,14 +13,20 @@ import taskRoutes from "./modules/tasks/task.routes.js";
 const app = express();
 const PORT = Number(process.env.PORT) || 5000;
 
-/* ------------------- Middleware ------------------- */
+const clientUrl =
+  process.env.NODE_ENV === "production"
+    ? process.env.CLIENT_URL_PROD
+    : process.env.CLIENT_URL_DEV;
+
+
 app.use(
   cors({
-    origin: "https://task-ckb2.onrender.com",
+    origin: clientUrl,
     credentials: true,
   })
 );
 
+/* ------------------- Middleware ------------------- */
 app.use(express.json());
 app.use(cookieParser());
 
