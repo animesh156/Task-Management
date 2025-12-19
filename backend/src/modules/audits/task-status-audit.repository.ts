@@ -14,6 +14,18 @@ export class TaskStatusAuditRepository {
   static findForUser() {
     return prisma.taskStatusAudit.findMany({
       orderBy: { createdAt: "desc" },
+       include: {
+        task: {
+          select: {
+            title: true,
+          },
+        },
+        user: {
+          select: {
+            name: true,
+          },
+        },
+      }
     });
   }
 }
