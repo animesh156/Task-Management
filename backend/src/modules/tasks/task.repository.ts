@@ -21,6 +21,8 @@ export class TaskRepository {
     return prisma.task.delete({ where: { id: taskId } });
   }
 
+  
+
   static findAllForUser(userId: string, query: TaskQueryInput) {
   const where: any = {};
 

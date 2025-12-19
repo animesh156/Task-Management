@@ -40,6 +40,8 @@ model User {
 
   notifications Notification[]
 
+  statusAudits TaskStatusAudit[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -64,6 +66,8 @@ model Task {
   creator    User @relation("CreatedTasks", fields: [creatorId], references: [id], onDelete: Cascade)
   assignedTo User @relation("AssignedTasks", fields: [assignedToId], references: [id], onDelete: Cascade)
 
+  statusAudits TaskStatusAudit[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -85,4 +89,23 @@ model Notification {
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
+}
+
+////////////////////
+// AUDIT
+////////////////////
+
+model TaskStatusAudit {
+  id        String     @id @default(uuid())
+  taskId    String
+  updatedBy String
+  oldStatus TaskStatus
+  newStatus TaskStatus
+  createdAt DateTime   @default(now())
+
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [updatedBy], references: [id], onDelete: Cascade)
+
+  @@index([taskId])
+  @@index([updatedBy])
 }
