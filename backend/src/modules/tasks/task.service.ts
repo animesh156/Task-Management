@@ -1,5 +1,5 @@
 import { TaskRepository } from "./task.repository.js";
-import type { CreateTaskInput, UpdateTaskInput, TaskQueryInput } from "./task.dto.js";
+import type { CreateTaskInput, UpdateTaskInput, TaskQueryInput } from "./task.dto.ts";
 import { prisma } from "../../lib/prisma.js";
 import { io } from "../../index.js";
 
