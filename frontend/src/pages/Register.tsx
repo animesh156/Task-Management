@@ -6,7 +6,7 @@ import {
   type RegisterFormData,
 } from "../validation/auth.schema";
 import { useRegister } from "../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
 export default function Register() {
@@ -157,12 +157,12 @@ export default function Register() {
         {/* Footer */}
         <p className="text-sm text-center text-slate-400 mt-5">
           Already have an account?{" "}
-          <a
-            href="/login"
+          <Link
+            to="/login"
             className="text-slate-200 font-medium hover:underline"
           >
             Login
-          </a>
+          </Link>
         </p>
       </div>
     </div>

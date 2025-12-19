@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginFormData } from "../validation/auth.schema";
 import { useLogin } from "../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
 
@@ -128,12 +128,12 @@ export default function Login() {
         {/* Footer */}
         <p className="text-sm text-center text-slate-400 mt-5">
           Don’t have an account?{" "}
-          <a
-            href="/register"
+          <Link
+            to="/register"
             className="text-slate-200 font-medium hover:underline"
           >
             Register
-          </a>
+          </Link>
         </p>
       </div>
     </div>
