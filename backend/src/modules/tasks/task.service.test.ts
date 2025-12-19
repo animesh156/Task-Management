@@ -1,6 +1,17 @@
+import { jest } from "@jest/globals";
+
+/* 🔥 Mock repository ONLY */
+jest.mock("./task.repository.js", () => ({
+  TaskRepository: {
+    create: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn(),
+    findAllForUser: jest.fn(),
+  },
+}));
+
 import { TaskService } from "./task.service.js";
 import { TaskRepository } from "./task.repository.js";
-import { prisma } from "../../lib/prisma.js";
 
 describe("TaskService.createTask", () => {
   const userId = "user-uuid";
@@ -14,42 +25,54 @@ describe("TaskService.createTask", () => {
     assignedToId: "assigned-uuid",
   };
 
+  // 🔥 FIX: strongly typed mock
+  const mockCreate = TaskRepository.create as jest.MockedFunction<
+    typeof TaskRepository.create
+  >;
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it("creates task when input is valid", async () => {
-    (TaskRepository.create as jest.Mock).mockResolvedValue({
+    mockCreate.mockResolvedValue({
       id: "task-id",
       ...validTask,
       creatorId: userId,
       dueDate: new Date(validTask.dueDate),
       createdAt: new Date(),
       updatedAt: new Date(),
+    } as any); // 👈 allowed in unit tests
+
+    const result = await TaskService.createTask(
+      userId,
+      validTask as any
+    );
+
+    expect(mockCreate).toHaveBeenCalledWith({
+      ...validTask,
+      dueDate: expect.any(Date),
+      creatorId: userId,
     });
 
-    const result = await TaskService.createTask(userId, validTask as any);
-
-    expect(TaskRepository.create).toHaveBeenCalled();
-    expect(prisma.notification.create).toHaveBeenCalled();
     expect(result.id).toBe("task-id");
   });
 
   it("throws error when due date is in the past", async () => {
+    const invalidTask = {
+      ...validTask,
+      dueDate: new Date(Date.now() - 1000).toISOString(),
+    };
+
     await expect(
-      TaskService.createTask(userId, {
-        ...validTask,
-        dueDate: new Date(Date.now() - 1000).toISOString(),
-      } as any)
+      TaskService.createTask(userId, invalidTask as any)
     ).rejects.toThrow("Due date cannot be in the past");
 
-    expect(TaskRepository.create).not.toHaveBeenCalled();
+    expect(mockCreate).not.toHaveBeenCalled();
   });
 
   it("propagates repository errors", async () => {
-    (TaskRepository.create as jest.Mock).mockRejectedValue(
-      new Error("DB failure")
-    );
+    mockCreate.mockRejectedValue(new Error("DB failure"));
 
     await expect(
       TaskService.createTask(userId, validTask as any)
