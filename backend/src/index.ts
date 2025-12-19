@@ -44,7 +44,7 @@ const server = http.createServer(app);
 
 export const io = new Server(server, {
   cors: {
-    origin: "https://task-ckb2.onrender.com",
+    origin: clientUrl,
     credentials: true,
   },
 });
