@@ -1,7 +1,5 @@
-import { jest } from "@jest/globals";
-
-/* 🔥 Mock repository ONLY */
-jest.mock("./task.repository.js", () => ({
+/* 🔥 Mock repository ONLY (CommonJS-compatible) */
+jest.mock("./task.repository", () => ({
   TaskRepository: {
     create: jest.fn(),
     update: jest.fn(),
@@ -10,8 +8,8 @@ jest.mock("./task.repository.js", () => ({
   },
 }));
 
-import { TaskService } from "./task.service.js";
-import { TaskRepository } from "./task.repository.js";
+const { TaskService } = require("./task.service");
+const { TaskRepository } = require("./task.repository");
 
 describe("TaskService.createTask", () => {
   const userId = "user-uuid";
@@ -25,10 +23,11 @@ describe("TaskService.createTask", () => {
     assignedToId: "assigned-uuid",
   };
 
-  // 🔥 FIX: strongly typed mock
-  const mockCreate = TaskRepository.create as jest.MockedFunction<
-    typeof TaskRepository.create
-  >;
+  // ✅ strongly typed mock (safe + clean)
+  const mockCreate =
+    TaskRepository.create as jest.MockedFunction<
+      typeof TaskRepository.create
+    >;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -42,7 +41,7 @@ describe("TaskService.createTask", () => {
       dueDate: new Date(validTask.dueDate),
       createdAt: new Date(),
       updatedAt: new Date(),
-    } as any); // 👈 allowed in unit tests
+    } as any); // ✅ OK in unit tests
 
     const result = await TaskService.createTask(
       userId,
