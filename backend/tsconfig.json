@@ -1,25 +1,26 @@
 {
-  // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
-    // File Layout
-    // "rootDir": "./src",
-    // "outDir": "./dist",
-
-    // Environment Settings
-    // See also https://aka.ms/tsconfig/module
-     "module": "NodeNext",
-     "target": "ES2022",
+    "module": "NodeNext",
+    "target": "ES2022",
     "moduleResolution": "NodeNext",
+
     "rootDir": "src",
     "outDir": "dist",
+
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true
   },
+
+  "include": ["src/**/*.ts"],
+
   "exclude": [
     "**/*.test.ts",
-    "**/*.spec.ts",
-    "**/__tests__/**"
+    "**/__tests__/**",
+    "**/__mocks__/**",
+    "jest.config.ts",
+    "dist"
   ]
 }
