@@ -17,7 +17,7 @@ export default function TaskFilters({
                     rounded-xl px-4 py-3">
       
       {/* Status */}
-      <div className="flex flex-col gap-1 w-[160px]">
+      <div className="flex flex-col gap-1 w-40">
         <label className="text-[11px] font-medium text-slate-400 uppercase tracking-wide">
           Status
         </label>
@@ -39,7 +39,7 @@ export default function TaskFilters({
       </div>
 
       {/* Priority */}
-      <div className="flex flex-col gap-1 w-[160px]">
+      <div className="flex flex-col gap-1 w-40">
         <label className="text-[11px] font-medium text-slate-400 uppercase tracking-wide">
           Priority
         </label>
@@ -61,7 +61,7 @@ export default function TaskFilters({
       </div>
 
       {/* Sort */}
-      <div className="flex flex-col gap-1 w-[200px]">
+      <div className="flex flex-col gap-1 w-50">
         <label className="text-[11px] font-medium text-slate-400 uppercase tracking-wide">
           Due Date
         </label>

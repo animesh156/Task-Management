@@ -9,7 +9,7 @@ import { Server } from "socket.io";
 import authRoutes from "./modules/auth/auth.routes.js";
 import userRoutes from "./modules/users/user.routes.js";
 import taskRoutes from "./modules/tasks/task.routes.js";
-import auditRoutes from "./modules/audits/task-status-audit.routes.js"
+import auditRoutes from "./modules/audits/task-status-audit.routes.js";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 5000;
@@ -18,7 +18,6 @@ const clientUrl =
   process.env.NODE_ENV === "production"
     ? process.env.CLIENT_URL_PROD
     : process.env.CLIENT_URL_DEV;
-
 
 app.use(
   cors({
@@ -52,17 +51,12 @@ export const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  
-
   // user joins personal room
   socket.on("join", (userId: string) => {
     socket.join(userId);
-    
   });
 
-  socket.on("disconnect", () => {
-    console.log("❌ Socket disconnected:", socket.id);
-  });
+  socket.on("disconnect", () => {});
 });
 
 /* ------------------- Start Server ------------------- */

@@ -43,9 +43,10 @@ export class TaskRepository {
 
   if (query.view !== "overdue") {
     if (query.status) where.status = query.status;
+    if (query.priority) where.priority = query.priority;
   }
 
-  if (query.priority) where.priority = query.priority;
+  
 
   const args: any = { where };
 

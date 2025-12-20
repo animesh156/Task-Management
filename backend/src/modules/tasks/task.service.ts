@@ -16,8 +16,6 @@ export class TaskService {
       creatorId: userId,
     });
 
-    
-
     return task;
   }
 
